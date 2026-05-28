@@ -8,20 +8,19 @@ function formatLoadingItem(item) {
   return fileName ? `Loading ${fileName}` : 'Loading scene';
 }
 
-export function LoadingOverlay({ audioReady, onComplete }) {
+export function LoadingOverlay({ onComplete }) {
   const { active, item, loaded, progress, total } = useProgress();
   const sceneReady = total > 0 && !active && progress >= 100;
-  const isComplete = sceneReady && audioReady;
   const displayProgress = sceneReady ? 100 : Math.max(0, Math.round(progress));
-  const loadingText = sceneReady ? 'Loading mainSong.mp3' : formatLoadingItem(item);
+  const loadingText = sceneReady ? 'Ready' : formatLoadingItem(item);
 
   React.useEffect(() => {
-    if (isComplete) {
+    if (sceneReady) {
       onComplete();
     }
-  }, [isComplete, onComplete]);
+  }, [onComplete, sceneReady]);
 
-  if (isComplete) return null;
+  if (sceneReady) return null;
 
   return (
     <section className="loading-overlay" aria-label="Loading game">

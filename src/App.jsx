@@ -10,7 +10,6 @@ export function App() {
   const [difficulty, setDifficulty] = useState('normal');
   const [finalScore, setFinalScore] = useState(0);
   const [isRoundComplete, setIsRoundComplete] = useState(false);
-  const [audioReady, setAudioReady] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const audioRef = useRef(null);
   const canShowMenu = isLoaded && !isPlaying && !isRoundComplete;
@@ -41,12 +40,9 @@ export function App() {
         ref={audioRef}
         src="/mainSong.mp3"
         preload="auto"
-        onLoadedData={() => setAudioReady(true)}
-        onCanPlay={() => setAudioReady(true)}
-        onCanPlayThrough={() => setAudioReady(true)}
         onEnded={handleSongEnded}
       />
-      <LoadingOverlay audioReady={audioReady} onComplete={() => setIsLoaded(true)} />
+      <LoadingOverlay onComplete={() => setIsLoaded(true)} />
       <RhythmGame difficulty={difficulty} isPlaying={isPlaying} onScoreChange={setFinalScore} />
 
       {canShowMenu && (
