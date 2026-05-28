@@ -3,6 +3,7 @@ import { Canvas } from '@react-three/fiber';
 import { LoadingOverlay } from './components/LoadingOverlay';
 import { RhythmGame } from './components/RhythmGame';
 import { Scene } from './components/Scene';
+import { useIsMobile } from './hooks/useIsMobile';
 
 export function App() {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -13,6 +14,7 @@ export function App() {
   const [isLoaded, setIsLoaded] = useState(false);
   const audioRef = useRef(null);
   const canShowMenu = isLoaded && !isPlaying && !isRoundComplete;
+  const isMobile = useIsMobile();
 
   function handlePlay() {
     setFinalScore(0);
@@ -32,8 +34,8 @@ export function App() {
 
   return (
     <main className="app-shell">
-      <Canvas camera={{ position: [-4, 1.2, 12], fov: 42 }} dpr={[1, 2]}>
-        <Scene isPlaying={isPlaying} />
+      <Canvas camera={{ position: isMobile ? [-1.6, 1.1, 14] : [-4, 1.2, 12], fov: isMobile ? 52 : 42 }} dpr={[1, 2]}>
+        <Scene isMobile={isMobile} isPlaying={isPlaying} />
       </Canvas>
       <audio
         ref={audioRef}
@@ -95,8 +97,6 @@ export function App() {
           </a>
         </nav>
       )}
-
-      <div className="desktop-only">Desktop only</div>
     </main>
   );
 }

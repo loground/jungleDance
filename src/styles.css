@@ -286,8 +286,11 @@ a {
   color: #2f1d0e;
   background: radial-gradient(circle at 35% 25%, #fff7c2 0%, #f6b341 64%, #be6b24 100%);
   box-shadow: 0 0 22px rgba(255, 229, 115, 0.58), 0 12px 24px rgba(47, 29, 14, 0.28);
+  cursor: pointer;
   font-size: 20px;
   font-weight: 900;
+  pointer-events: auto;
+  touch-action: manipulation;
 }
 
 .hit-circle.is-hit {
@@ -311,6 +314,7 @@ a {
   box-shadow: 0 10px 22px rgba(47, 29, 14, 0.28);
   font-size: 19px;
   font-weight: 900;
+  transform: translateX(-50%);
   text-transform: uppercase;
 }
 
@@ -347,42 +351,22 @@ a {
 }
 
 @media (max-width: 560px) {
-  .app-shell > canvas,
-  .difficulty-panel,
-  .loading-overlay,
-  .menu-actions,
-  .rhythm-game,
-  .round-summary {
-    display: none;
-  }
-
-  .desktop-only {
-    position: absolute;
-    inset: 0;
-    display: grid;
-    place-items: center;
-    padding: 24px;
-    color: #fff8d9;
-    background: #ff9f5f;
-    font-size: 28px;
-    font-weight: 900;
-    letter-spacing: 0;
-    text-align: center;
-    text-transform: uppercase;
-  }
-
   .menu-actions {
+    bottom: 22px;
     width: min(88vw, 320px);
-    flex-direction: column;
   }
 
   .menu-actions button,
   .menu-actions a {
     width: 100%;
+    min-width: 0;
+    min-height: 44px;
+    padding: 0 14px;
+    font-size: 13px;
   }
 
   .difficulty-panel {
-    bottom: calc(clamp(28px, 7vh, 72px) + 132px);
+    bottom: 80px;
     width: min(88vw, 320px);
   }
 
@@ -394,25 +378,47 @@ a {
   }
 
   .menu-actions--playing {
-    width: auto;
-    right: 14px;
-    bottom: 14px;
+    display: none;
+  }
+
+  .scoreboard {
+    top: 12px;
+    left: 12px;
+    gap: 8px;
+    font-size: 13px;
   }
 
   .note-highway {
-    width: 96vw;
-    bottom: 76px;
+    width: 100vw;
+    height: min(520px, 68vh);
+    bottom: 22px;
   }
 
   .hit-circle {
-    width: 44px;
-    height: 44px;
-    font-size: 16px;
+    width: 42px;
+    height: 42px;
+    border-width: 2px;
+    color: transparent;
+    font-size: 0;
   }
 
   .falling-note {
-    width: 36px;
-    height: 36px;
-    font-size: 16px;
+    width: 34px;
+    height: 34px;
+    color: transparent;
+    font-size: 0;
+  }
+
+  .round-summary {
+    min-width: min(320px, 88vw);
+    padding: 22px;
+  }
+
+  .round-summary h2 {
+    font-size: 22px;
+  }
+
+  .round-summary p {
+    font-size: 46px;
   }
 }

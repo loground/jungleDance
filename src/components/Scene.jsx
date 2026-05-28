@@ -6,10 +6,10 @@ import { MenuModel } from './MenuModel';
 import { MonkeyModel } from './MonkeyModel';
 import { SceneFallback } from './SceneFallback';
 
-export function Scene({ isPlaying }) {
+export function Scene({ isMobile, isPlaying }) {
   return (
     <>
-      <CameraRig isPlaying={isPlaying} />
+      <CameraRig isMobile={isMobile} isPlaying={isPlaying} />
       <color attach="background" args={['#ff9f5f']} />
       <fog attach="fog" args={['#ff9f5f', 8, 20]} />
       <ambientLight intensity={1.25} />

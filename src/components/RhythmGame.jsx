@@ -63,6 +63,31 @@ export function RhythmGame({ difficulty, isPlaying, onScoreChange }) {
     }));
   }
 
+  function handleLaneInput(letter) {
+    const candidates = notesRef.current
+      .filter((note) => note.letter === letter)
+      .map((note) => ({
+        ...note,
+        distance: Math.abs((performance.now() - note.spawnedAt) / settings.fallTime - HIT_PROGRESS),
+      }))
+      .filter((note) => note.distance <= settings.hitWindow)
+      .sort((a, b) => a.distance - b.distance);
+
+    if (candidates.length === 0) {
+      flashLane(letter, 'miss');
+      setCombo(0);
+      return;
+    }
+
+    const hitNote = candidates[0];
+    setNotes((currentNotes) => currentNotes.filter((note) => note.id !== hitNote.id));
+    flashLane(letter, 'hit');
+    setCombo((currentCombo) => {
+      setScore((currentScore) => currentScore + 100 + Math.min(currentCombo, 20) * 10);
+      return currentCombo + 1;
+    });
+  }
+
   useEffect(() => {
     if (!isPlaying) return undefined;
 
@@ -118,29 +143,7 @@ export function RhythmGame({ difficulty, isPlaying, onScoreChange }) {
     function onKeyDown(event) {
       const pressedLetter = event.key.toUpperCase();
       if (!LANES.includes(pressedLetter)) return;
-
-      const candidates = notesRef.current
-        .filter((note) => note.letter === pressedLetter)
-        .map((note) => ({
-          ...note,
-          distance: Math.abs((performance.now() - note.spawnedAt) / settings.fallTime - HIT_PROGRESS),
-        }))
-        .filter((note) => note.distance <= settings.hitWindow)
-        .sort((a, b) => a.distance - b.distance);
-
-      if (candidates.length === 0) {
-        flashLane(pressedLetter, 'miss');
-        setCombo(0);
-        return;
-      }
-
-      const hitNote = candidates[0];
-      setNotes((currentNotes) => currentNotes.filter((note) => note.id !== hitNote.id));
-      flashLane(pressedLetter, 'hit');
-      setCombo((currentCombo) => {
-        setScore((currentScore) => currentScore + 100 + Math.min(currentCombo, 20) * 10);
-        return currentCombo + 1;
-      });
+      handleLaneInput(pressedLetter);
     }
 
     window.addEventListener('keydown', onKeyDown);
@@ -162,12 +165,17 @@ export function RhythmGame({ difficulty, isPlaying, onScoreChange }) {
       <div className="note-highway">
         {lanes.map((letter) => (
           <div className="note-lane" key={letter}>
-            <div
+            <button
               className={`hit-circle ${laneFeedback[letter] ? `is-${laneFeedback[letter].type}` : ''}`}
               key={laneFeedback[letter]?.id ?? letter}
+              type="button"
+              onPointerDown={(event) => {
+                event.preventDefault();
+                handleLaneInput(letter);
+              }}
             >
               {letter}
-            </div>
+            </button>
           </div>
         ))}
 
@@ -180,7 +188,7 @@ export function RhythmGame({ difficulty, isPlaying, onScoreChange }) {
               className="falling-note"
               key={note.id}
               style={{
-                left: `calc(${(note.lane + 0.5) * (100 / lanes.length)}% - 22px)`,
+                left: `${(note.lane + 0.5) * (100 / lanes.length)}%`,
                 top: `${top}%`,
               }}
             >
