@@ -8,6 +8,7 @@ import { useIsMobile } from './hooks/useIsMobile';
 export function App() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [difficulty, setDifficulty] = useState('normal');
+  const [roundDifficulty, setRoundDifficulty] = useState('normal');
   const [finalScore, setFinalScore] = useState(0);
   const [isRoundComplete, setIsRoundComplete] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -18,6 +19,7 @@ export function App() {
   function handlePlay() {
     setFinalScore(0);
     setIsRoundComplete(false);
+    setRoundDifficulty(difficulty);
     setIsPlaying(true);
 
     if (audioRef.current) {
@@ -74,6 +76,7 @@ export function App() {
       {isRoundComplete && (
         <section className="round-summary" aria-label="Round complete">
           <h2>Round Complete</h2>
+          <span>{roundDifficulty}</span>
           <p>{finalScore}</p>
           <button type="button" onClick={handlePlay}>
             Play Again

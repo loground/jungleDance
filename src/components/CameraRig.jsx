@@ -15,10 +15,11 @@ const DESKTOP_SHOW_SHOTS = [
 ];
 
 const MOBILE_SHOW_SHOTS = [
-  { position: [-1.6, 1.35, 10.5], lookAt: [0, 0.95, 0.9], drift: [0.45, 0.14, 0.24], fov: 52 },
-  { position: [-0.6, 1.4, 7.4], lookAt: [0, 1.25, 1], drift: [0.25, 0.1, 0.12], fov: 47 },
-  { position: [1.3, 1.15, 8.2], lookAt: [0, 1.05, 1], drift: [0.3, 0.12, 0.16], fov: 49 },
-  { position: [-1.9, 2.2, 8.9], lookAt: [0, 0.95, 1], drift: [0.24, 0.1, 0.14], fov: 48 },
+  { position: [-1.6, 1.35, 10.5], lookAt: [0, 0.95, 0.9], drift: [0.55, 0.14, 0.28], fov: 52 },
+  { position: [-0.7, 1.45, 6.7], lookAt: [0, 1.28, 1], drift: [0.28, 0.1, 0.12], fov: 45 },
+  { position: [1.55, 1.12, 7.5], lookAt: [0, 1.05, 1], drift: [0.38, 0.14, 0.18], fov: 48 },
+  { position: [-2.05, 2.35, 8.1], lookAt: [0, 0.95, 1], drift: [0.3, 0.11, 0.14], fov: 46 },
+  { position: [0.15, 0.98, 5.95], lookAt: [0, 1.38, 1], drift: [0.18, 0.08, 0.1], fov: 42 },
 ];
 
 export function CameraRig({ isMobile, isPlaying }) {
