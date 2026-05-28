@@ -18,7 +18,7 @@ export function Scene({ isMobile, isPlaying }) {
       <Suspense fallback={<SceneFallback />}>
         <Environment preset="sunset" background={false} environmentIntensity={1.1} />
         <MenuModel />
-        <MonkeyModel />
+        <MonkeyModel isPlaying={isPlaying} />
         <JungleDanceTitle />
       </Suspense>
     </>

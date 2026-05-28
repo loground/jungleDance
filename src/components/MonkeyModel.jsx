@@ -1,28 +1,45 @@
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useAnimations } from '@react-three/drei';
 import { useCompressedGLTF } from '../hooks/useCompressedGLTF';
 
-export function MonkeyModel() {
+export function MonkeyModel({ isPlaying }) {
   const group = useRef();
   const { scene, animations } = useCompressedGLTF('/monkey.glb');
   const { actions } = useAnimations(animations, group);
+  const [clipIndex, setClipIndex] = useState(0);
 
-  const randomClipName = useMemo(() => {
-    const clipPool = animations.slice(0, 4);
-    if (clipPool.length === 0) return null;
-    return clipPool[Math.floor(Math.random() * clipPool.length)].name;
+  const danceClipNames = useMemo(() => {
+    return animations.slice(0, 4).map((clip) => clip.name);
   }, [animations]);
 
   useEffect(() => {
-    if (!randomClipName || !actions[randomClipName]) return undefined;
+    if (danceClipNames.length === 0) return;
+    setClipIndex(Math.floor(Math.random() * danceClipNames.length));
+  }, [danceClipNames]);
 
-    const action = actions[randomClipName];
-    action.reset().fadeIn(0.25).play();
+  useEffect(() => {
+    if (!isPlaying || danceClipNames.length < 2) return undefined;
+
+    const timeoutId = window.setTimeout(() => {
+      setClipIndex((currentIndex) => (currentIndex + 1 + Math.floor(Math.random() * (danceClipNames.length - 1))) % danceClipNames.length);
+    }, 4200 + Math.random() * 2200);
 
     return () => {
-      action.fadeOut(0.25);
+      window.clearTimeout(timeoutId);
     };
-  }, [actions, randomClipName]);
+  }, [clipIndex, danceClipNames.length, isPlaying]);
+
+  useEffect(() => {
+    const clipName = danceClipNames[clipIndex];
+    if (!clipName || !actions[clipName]) return undefined;
+
+    const action = actions[clipName];
+    action.reset().fadeIn(0.35).play();
+
+    return () => {
+      action.fadeOut(0.35);
+    };
+  }, [actions, clipIndex, danceClipNames]);
 
   return (
     <group ref={group} position={[0, 0.25, 1]} rotation={[0, -2, 0]} scale={1.35}>
