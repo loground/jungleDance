@@ -1,13 +1,15 @@
 import React, { Suspense } from 'react';
 import { Environment } from '@react-three/drei';
+import { CameraRig } from './CameraRig';
 import { JungleDanceTitle } from './JungleDanceTitle';
 import { MenuModel } from './MenuModel';
 import { MonkeyModel } from './MonkeyModel';
 import { SceneFallback } from './SceneFallback';
 
-export function Scene() {
+export function Scene({ isPlaying }) {
   return (
     <>
+      <CameraRig isPlaying={isPlaying} />
       <color attach="background" args={['#ff9f5f']} />
       <fog attach="fog" args={['#ff9f5f', 8, 20]} />
       <ambientLight intensity={1.25} />
